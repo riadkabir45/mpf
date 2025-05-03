@@ -25,6 +25,11 @@ function UserManager() {
         test();
     }, [contract])
 
+    const handleRoleChange = async (index, userAddr) => {
+        console.log(userAddr, index);
+        await contract.methods.changeRole(userAddr, index).send({ from: accounts[0] });
+    }
+
     return (
         <PageHolder><table className="table">
             <thead className="thead-dark">
@@ -41,7 +46,22 @@ function UserManager() {
                         <td>{user[0]}</td>
                         <td>{user[1]}</td>
                         <td>{user[2]}</td>
-                        <td>{user[3] == 0 ? "Admin" : user[3] == 1 ? "Reporter" : "Investigator"}</td>
+                        <td>
+                            <div className="dropdown">
+                                <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {user[3] == 0 ? "Admin" : user[3] == 1 ? "Reporter" : "Investigator"}
+                                </button>
+                                <ul className="dropdown-menu">
+                                    {['Admin', 'Reporter', 'Investigator'].map((element, index) => (
+                                        user[3] != index ? (
+                                            <React.Fragment key={index}>
+                                                <li onClick={() => handleRoleChange(index, user[0])} ><a className="dropdown-item">{element}</a></li>
+                                            </React.Fragment>
+                                        ) : null
+                                    ))}
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                 ))}
             </tbody>
