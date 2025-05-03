@@ -3,17 +3,17 @@ import PageHolder from './PageHolder';
 import { useEth } from '../contexts/EthContext';
 
 function UserManager() {
-    const { state: { contract, accounts } } = useEth();
+    const { state: { userManagerContract, accounts } } = useEth();
     const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
 
         const test = async () => {
-            if (contract) {
+            if (userManagerContract) {
                 const td = []
-                const users = await contract.methods.getAllAddresses().call();
+                const users = await userManagerContract.methods.getAllAddresses().call();
                 for (let i = 0; i < users.length; i++) {
-                    td.push(await contract.methods.getUser(users[i]).call());
+                    td.push(await userManagerContract.methods.getUser(users[i]).call());
                 }
                 console.log(td);
                 setTableData(td);
@@ -23,11 +23,11 @@ function UserManager() {
         }
 
         test();
-    }, [contract])
+    }, [userManagerContract])
 
     const handleRoleChange = async (index, userAddr) => {
         console.log(userAddr, index);
-        await contract.methods.changeRole(userAddr, index).send({ from: accounts[0] });
+        await userManagerContract.methods.changeRole(userAddr, index).send({ from: accounts[0] });
     }
 
     return (

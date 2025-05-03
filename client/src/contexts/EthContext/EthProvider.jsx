@@ -3,36 +3,43 @@ import Web3 from "web3";
 import EthContext from "./EthContext";
 import { reducer, actions, initialState } from "./state";
 
+function genetateContractInstance(artifact, web3, networkID) {
+
+  const { abi, networks } = artifact;
+  console.log(networks);
+  console.log(networkID, 1);
+  let address, contract;
+  try {
+    address = artifact.networks["5777"].address;
+    contract = new web3.eth.Contract(abi, address);
+    return contract
+  } catch (err) {
+    console.error(err);
+    return null
+  }
+}
+
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = useCallback(
-    async artifact => {
-      if (artifact) {
+    async (userManagerArtifact, reportManagerArtifact) => {
+      if (userManagerArtifact && reportManagerArtifact) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
         const accounts = [];
-        // if (window.ethereum) {
-        //   const winEthAcc = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        //   accounts.push(...(winEthAcc.map(elem => elem.toUpperCase())));
-        // }
-        // const webEthAcc = await web3.eth.requestAccounts();
         accounts.push(...await web3.eth.requestAccounts());
 
-        console.log(accounts);
-
-
         const networkID = await web3.eth.net.getId();
-        const { abi } = artifact;
-        let address, contract;
-        try {
-          address = artifact.networks[networkID].address;
-          contract = new web3.eth.Contract(abi, address);
-        } catch (err) {
-          console.error(err);
-        }
+        const userManagerContract = genetateContractInstance(userManagerArtifact, web3, networkID);
+        const reportManagerContract = genetateContractInstance(reportManagerArtifact, web3, networkID);
+
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract }
+          data: {
+            web3, accounts, networkID,
+            userManagerArtifact, userManagerContract,
+            reportManagerContract, reportManagerArtifact
+          }
         });
       }
     }, []);
@@ -40,8 +47,9 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/UserManager.json");
-        init(artifact);
+        const userManagerArtifact = require("../../contracts/UserManager.json");
+        const reportManagerArtifact = require('../../contracts/ReportManager.json')
+        init(userManagerArtifact, reportManagerArtifact);
       } catch (err) {
         console.error(err);
       }
@@ -53,14 +61,14 @@ function EthProvider({ children }) {
   useEffect(() => {
     const events = ["chainChanged", "accountsChanged"];
     const handleChange = () => {
-      init(state.artifact);
+      init(state.userManagerArtifact);
     };
 
     events.forEach(e => window.ethereum.on(e, handleChange));
     return () => {
       events.forEach(e => window.ethereum.removeListener(e, handleChange));
     };
-  }, [init, state.artifact]);
+  }, [init, state.userManagerArtifact]);
 
   return (
     <EthContext.Provider value={{
