@@ -23,7 +23,7 @@ struct Report {
 contract ReportManager {
     using StringUtils for string;
 
-    Report[] reports;
+    bytes32[] reports;
     mapping (bytes32 => Report) public reportMap;
     UserManager userManager;
 
@@ -84,7 +84,7 @@ contract ReportManager {
             urgency = Urgency.HIGH;
 
         Report memory newReport = Report(cid, _name, _age, _height, _description, _location, _contact, urgency, ReportStatus.MISSING);
-        reports.push(newReport);
+        reports.push(cid);
         reportMap[cid] = newReport;
 
         return reports.length - 1;
@@ -105,14 +105,11 @@ contract ReportManager {
         updateReport(_reportCID, ReportStatus.FALSE);
     }
 
-    function findReportByCID(bytes32 _cid) public view returns (uint) {
-        for (uint i = 0; i <=reports.length; i++ )
-            if (reports[i].cid == _cid)
-                return i + 1;
-        return 0;
+    function findReportByCID(bytes32 _cid) public view returns (Report memory) {
+        return reportMap[_cid];
     }
 
-    function findAllReports() public view returns (Report[] memory) {
+    function findAllReports() public view returns (bytes32[] memory) {
         return reports;
     }
 
@@ -120,7 +117,7 @@ contract ReportManager {
         uint[] memory divisionCount = new uint[](divisions.length);
         
         for (uint i = 0; i < reports.length; i++) {
-            divisionCount[checkDivisionIndex(reports[i].location) - 1] += 1;
+            divisionCount[checkDivisionIndex(reportMap[reports[i]].location) - 1] += 1;
         }
 
         string memory tmpName;
@@ -150,7 +147,7 @@ contract ReportManager {
         uint[] memory divisionCount = new uint[](divisions.length);
         
         for (uint i = 0; i < reports.length; i++) {
-            divisionCount[checkDivisionIndex(reports[i].location) - 1] += 1;
+            divisionCount[checkDivisionIndex(reportMap[reports[i]].location) - 1] += 1;
         }
 
         string memory tmpName;
@@ -178,14 +175,14 @@ contract ReportManager {
     function findReportByDivision(string memory _location) public view returns (Report[] memory)  {
         uint filterCount = 0;
         for (uint i = 0; i < reports.length; i++) 
-            if (reports[i].location.compare(_location))
+            if (reportMap[reports[i]].location.compare(_location))
                 filterCount++;
 
         Report[] memory filters = new Report[](filterCount);
         filterCount = 0;
         for (uint i = 0; i < reports.length; i++)
-            if(reports[i].location.compare(_location)) {
-                filters[filterCount]  = reports[i];
+            if(reportMap[reports[i]].location.compare(_location)) {
+                filters[filterCount]  = reportMap[reports[i]];
                 filterCount++;
             }
         
