@@ -8,6 +8,7 @@ import UserProfile from "./pages/userProfile";
 import Logout from "./pages/Logout";
 import DefautHandler from "./pages/DefaultHandler";
 import ReportUser from "./pages/ReportUser";
+import ReportManager from "./pages/ReportManager";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="logout" element={<Logout />} />
         <Route path="" element={<DefautHandler />} />
         <Route path="reportUser" element={<ReportUser />} />
+        <Route path="reportManager" element={<ReportManager />} />
       </Routes>
     </EthProvider>
   );

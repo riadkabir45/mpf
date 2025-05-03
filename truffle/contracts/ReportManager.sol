@@ -48,6 +48,7 @@ contract ReportManager {
 
     constructor(address _userManager) {
         userManager = UserManager(_userManager);
+        testReport();
     }
 
     function testReport() public {
@@ -90,7 +91,8 @@ contract ReportManager {
     ) public returns (uint) {
         require(userManager.userExists(msg.sender), "User does not exist");
         require(
-            userManager.checkUserType(msg.sender, RoleType.REPORTER),
+            userManager.checkUserType(msg.sender, RoleType.REPORTER) ||
+                userManager.checkUserType(msg.sender, RoleType.ADMIN),
             "Not a reporter"
         );
         require(

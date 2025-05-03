@@ -1,16 +1,14 @@
 import PageHolder from "./PageHolder";
 import { useEth } from "../contexts/EthContext";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
     const { state: { userManagerContract, accounts } } = useEth();
-    const navigate = useNavigate();
 
     const handleLogin = async (event) => {
         if (await userManagerContract.methods.userExists(accounts[0]).call()) {
             const user = await userManagerContract.methods.getUser(accounts[0]).call();
             localStorage.setItem('userSession', user);
-            navigate('/userManager')
+            window.location = '/';
         }
     }
 
