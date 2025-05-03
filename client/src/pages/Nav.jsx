@@ -9,24 +9,34 @@ function Nav() {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand"><NavLink style={navLinkStyle} to="/">MPF</NavLink></a>
+                <span className="navbar-brand"><NavLink style={navLinkStyle} to="/">MPF</NavLink></span>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <a className="nav-link"><NavLink style={navLinkStyle} to="/signup">Sign Up</NavLink></a>
-                        </li>
                         {
                             localStorage.getItem('userSession') != null ? (
-                                <li className="nav-item">
-                                    <a className="nav-link"><NavLink style={navLinkStyle} to="/">User Manager</NavLink></a>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <span className="nav-link"><NavLink style={navLinkStyle} to="/">User Profile</NavLink></span>
+                                    </li>
+                                    <li className="nav-item">
+                                        <span className="nav-link"><NavLink style={navLinkStyle} to="/userManager">User Manager</NavLink></span>
+                                    </li>
+                                    <li className="nav-item">
+                                        <span className="nav-link"><NavLink style={navLinkStyle} to="/logout">Logout</NavLink></span>
+                                    </li>
+                                </>
                             ) : (
-                                <li className="nav-item">
-                                    <a className="nav-link"><NavLink style={navLinkStyle} to="/Login">Login</NavLink></a>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <span className="nav-link"><NavLink style={navLinkStyle} to="/signup">Sign Up</NavLink></span>
+                                    </li>
+                                    <li className="nav-item">
+                                        <span className="nav-link"><NavLink style={navLinkStyle} to="/Login">Login</NavLink></span>
+                                    </li>
+                                </>
                             )
                         }
                         <li className="nav-item dropdown d-none">

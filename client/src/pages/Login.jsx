@@ -5,9 +5,10 @@ function Login() {
     const { state: { contract, accounts } } = useEth();
 
     const handleLogin = async (event) => {
-        const user = await contract.methods.userExists(accounts[0]).call();
-        if (user) localStorage.setItem('userSession', accounts[0]);
-        console.log(user);
+        if (await contract.methods.userExists(accounts[0]).call()) {
+            const user = await contract.methods.getUser(accounts[0]).call();
+            localStorage.setItem('userSession', user);
+        }
     }
 
     return (
