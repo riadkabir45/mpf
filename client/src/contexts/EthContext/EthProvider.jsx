@@ -6,11 +6,9 @@ import { reducer, actions, initialState } from "./state";
 function genetateContractInstance(artifact, web3, networkID) {
 
   const { abi, networks } = artifact;
-  console.log(networks);
-  console.log(networkID, 1);
   let address, contract;
   try {
-    address = artifact.networks["5777"].address;
+    address = artifact.networks[networkID].address;
     contract = new web3.eth.Contract(abi, address);
     return contract
   } catch (err) {

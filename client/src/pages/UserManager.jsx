@@ -15,7 +15,6 @@ function UserManager() {
                 for (let i = 0; i < users.length; i++) {
                     td.push(await userManagerContract.methods.getUser(users[i]).call());
                 }
-                console.log(td);
                 setTableData(td);
 
             }
