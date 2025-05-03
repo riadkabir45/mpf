@@ -18,9 +18,17 @@ function Nav() {
                         <li className="nav-item">
                             <a className="nav-link"><NavLink style={navLinkStyle} to="/signup">Sign Up</NavLink></a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#"><NavLink style={navLinkStyle} to="/">User Manager</NavLink></a>
-                        </li>
+                        {
+                            localStorage.getItem('userSession') != null ? (
+                                <li className="nav-item">
+                                    <a className="nav-link"><NavLink style={navLinkStyle} to="/">User Manager</NavLink></a>
+                                </li>
+                            ) : (
+                                <li className="nav-item">
+                                    <a className="nav-link"><NavLink style={navLinkStyle} to="/Login">Login</NavLink></a>
+                                </li>
+                            )
+                        }
                         <li className="nav-item dropdown d-none">
                             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dropdown
