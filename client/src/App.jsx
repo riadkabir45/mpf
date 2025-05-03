@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Nav from "./pages/Nav";
 import UserProfile from "./pages/userProfile";
 import Logout from "./pages/Logout";
+import DefautHandler from "./pages/DefaultHandler";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<Login />} />
         <Route path="userManager" element={<UserManager />} />
-        <Route path="" element={<UserProfile />} />
-        <Route path="/logout" element={<Logout />} />
+        <Route path="userProfile" element={<UserProfile />} />
+        <Route path="logout" element={<Logout />} />
+        <Route path="" element={<DefautHandler />} />
       </Routes>
     </EthProvider>
   );
