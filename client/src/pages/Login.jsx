@@ -2,11 +2,11 @@ import PageHolder from "./PageHolder";
 import { useEth } from "../contexts/EthContext";
 
 function Login() {
-    const { state: { contract, accounts } } = useEth();
+    const { state: { userManagerContract, accounts } } = useEth();
 
     const handleLogin = async (event) => {
-        if (await contract.methods.userExists(accounts[0]).call()) {
-            const user = await contract.methods.getUser(accounts[0]).call();
+        if (await userManagerContract.methods.userExists(accounts[0]).call()) {
+            const user = await userManagerContract.methods.getUser(accounts[0]).call();
             localStorage.setItem('userSession', user);
         }
     }

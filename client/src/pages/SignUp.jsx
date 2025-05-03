@@ -3,14 +3,14 @@ import { useEth } from "../contexts/EthContext";
 import { useState } from "react";
 
 function SignUp() {
-    const { state: { contract, accounts } } = useEth();
+    const { state: { userManagerContract, accounts } } = useEth();
     const [username, setUsername] = useState('');
     const [userNid, setUserNid] = useState('');
 
     const handleSignUp = async (event) => {
         event.preventDefault();
         try {
-            const ret = await contract.methods.registerUser(username, userNid).send({ from: accounts[0] });
+            const ret = await userManagerContract.methods.registerUser(username, userNid).send({ from: accounts[0] });
         } catch (error) {
             if (error.reason)
                 console.log(error.reason);
