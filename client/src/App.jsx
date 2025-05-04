@@ -10,6 +10,7 @@ import DefautHandler from "./pages/DefaultHandler";
 import ReportUser from "./pages/ReportUser";
 import ReportManager from "./pages/ReportManager";
 import InvestigationManager from "./pages/InvestigationManager";
+import AllocateInvestigator from "./pages/AllocateInvestigator";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="reportUser" element={<ReportUser />} />
         <Route path="reportManager" element={<ReportManager />} />
         <Route path="investigaionManager" element={<InvestigationManager />} />
+        <Route path="allocate/:id" element={<AllocateInvestigator />} />
       </Routes>
     </EthProvider>
   );

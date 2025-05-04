@@ -10,6 +10,8 @@ contract InvestigationManager {
     UserManager userManager;
     uint balance;
 
+    address[] investigators;
+
     mapping(bytes32 => address) investigations;
     mapping(address => address[2]) schedules;
 
@@ -35,6 +37,11 @@ contract InvestigationManager {
             "Investigator already assigned"
         );
         investigations[_reportCID] = investigatorAddress;
+        investigators.push(investigatorAddress);
+    }
+
+    function getInvestigators() public view returns (address[] memory) {
+        return investigators;
     }
 
     function checkIfAssigned(bytes32 _cid) public view returns (bool) {

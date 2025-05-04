@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import PageHolder from './PageHolder';
 import { useEth } from '../contexts/EthContext';
+import { useNavigate } from "react-router";
 
 function ReportManager() {
-    const { state: { web3, reportManagerContract, accounts } } = useEth();
+    const { state: { web3, reportManagerContract, investigationManagerContract, accounts } } = useEth();
     const [tableData, setTableData] = useState([]);
-    const [bottomData, setBottomData] = useState('{}');
+    const [bottomData, setBottomData] = useState('');
+    const [allocationData, setAllocationData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const ReportStatus = ['Missing', 'Found', 'False']
+    const ReportStatus = ['Missing', 'Found', 'False'];
+    const navigator = useNavigate();
 
     const toTitleCase = (str) => {
         return str.toLowerCase().split(' ').map(word => {
@@ -32,6 +35,20 @@ function ReportManager() {
                     const locationReports = await reportManagerContract.methods.findReportByDivision(btd.locations[i]).call();
                     btd.locationReport.push(locationReports);
                 }
+
+                const reportAllocation = []
+                //investigationManagerContract
+                for (let i = 0; i < reports.length; i++) {
+                    const reportStatus = await investigationManagerContract.methods.checkIfAssigned(reports[i]).call();
+                    if (reportStatus) {
+                        const investigator = await investigationManagerContract.methods.getInvestigator(reports[i]).call();
+                        reportAllocation.push(investigator);
+                    } else
+                        reportAllocation.push(reportStatus);
+                }
+
+                setAllocationData(reportAllocation);
+
 
                 setTableData(td);
                 setBottomData(btd);
@@ -60,6 +77,10 @@ function ReportManager() {
         );
     });
 
+    const handleAllocation = (reportAddr) => {
+        navigator(`/allocate/${reportAddr}`);
+    }
+
     return (
         <PageHolder>
             <div>
@@ -81,10 +102,11 @@ function ReportManager() {
                             <th>Contact</th>
                             <th>Urgency</th>
                             <th>Report Status</th>
+                            <th>Assigned Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredData.map(report => (
+                        {filteredData.map((report, idx) => (
                             <tr key={report[0]}>
                                 <td>{report[1]}</td>
                                 <td>{report[2]}</td>
@@ -108,6 +130,13 @@ function ReportManager() {
                                             ))}
                                         </ul>
                                     </div>
+                                </td>
+                                <td>
+                                    {allocationData[idx] ? allocationData[idx] : (
+                                        <button className='btn btn-primary w-100'
+                                            onClick={() => handleAllocation(report[0])}
+                                        >Assign</button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

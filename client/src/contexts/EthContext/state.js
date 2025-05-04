@@ -9,7 +9,9 @@ const initialState = {
   userManagerArtifact: null,
   userManagerContract: null,
   reportManagerArtifact: null,
-  reportManagerContract: null
+  reportManagerContract: null,
+  investigationManagerArtifact: null,
+  investigationManagerContract: null
 };
 
 const reducer = (state, action) => {

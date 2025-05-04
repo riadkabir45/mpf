@@ -21,8 +21,8 @@ function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = useCallback(
-    async (userManagerArtifact, reportManagerArtifact) => {
-      if (userManagerArtifact && reportManagerArtifact) {
+    async (userManagerArtifact, reportManagerArtifact, investigationManagerArtifact) => {
+      if (userManagerArtifact && reportManagerArtifact && investigationManagerArtifact) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
         const accounts = [];
         accounts.push(...await web3.eth.requestAccounts());
@@ -30,13 +30,15 @@ function EthProvider({ children }) {
         const networkID = await web3.eth.net.getId();
         const userManagerContract = genetateContractInstance(userManagerArtifact, web3, networkID);
         const reportManagerContract = genetateContractInstance(reportManagerArtifact, web3, networkID);
+        const investigationManagerContract = genetateContractInstance(investigationManagerArtifact, web3, networkID);
 
         dispatch({
           type: actions.init,
           data: {
             web3, accounts, networkID,
             userManagerArtifact, userManagerContract,
-            reportManagerContract, reportManagerArtifact
+            reportManagerContract, reportManagerArtifact,
+            investigationManagerArtifact, investigationManagerContract
           }
         });
       }
@@ -47,7 +49,8 @@ function EthProvider({ children }) {
       try {
         const userManagerArtifact = require("../../contracts/UserManager.json");
         const reportManagerArtifact = require('../../contracts/ReportManager.json')
-        init(userManagerArtifact, reportManagerArtifact);
+        const investigationManagerArtifact = require('../../contracts/InvestigationManager.json')
+        init(userManagerArtifact, reportManagerArtifact, investigationManagerArtifact);
       } catch (err) {
         console.error(err);
       }
