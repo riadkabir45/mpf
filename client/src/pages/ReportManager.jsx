@@ -4,7 +4,7 @@ import { useEth } from '../contexts/EthContext';
 import { useNavigate } from "react-router";
 
 function ReportManager() {
-    const { state: { web3, reportManagerContract, investigationManagerContract, accounts } } = useEth();
+    const { state: { web3, userManagerContract, reportManagerContract, investigationManagerContract, accounts } } = useEth();
     const [tableData, setTableData] = useState([]);
     const [bottomData, setBottomData] = useState('');
     const [allocationData, setAllocationData] = useState([]);
@@ -42,7 +42,8 @@ function ReportManager() {
                     const reportStatus = await investigationManagerContract.methods.checkIfAssigned(reports[i]).call();
                     if (reportStatus) {
                         const investigator = await investigationManagerContract.methods.getInvestigator(reports[i]).call();
-                        reportAllocation.push(investigator);
+                        const investigatorDetail = await userManagerContract.methods.getUser(investigator).call();
+                        reportAllocation.push(investigatorDetail.name);
                     } else
                         reportAllocation.push(reportStatus);
                 }
@@ -52,7 +53,6 @@ function ReportManager() {
 
                 setTableData(td);
                 setBottomData(btd);
-                console.log(btd)
             }
 
         }
@@ -131,7 +131,7 @@ function ReportManager() {
                                         </ul>
                                     </div>
                                 </td>
-                                <td>
+                                <td className='text-center'>
                                     {allocationData[idx] ? allocationData[idx] : (
                                         <button className='btn btn-primary w-100'
                                             onClick={() => handleAllocation(report[0])}
