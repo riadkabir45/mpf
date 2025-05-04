@@ -100,7 +100,7 @@ function ReportManager() {
                                         </button>
                                         <ul className="dropdown-menu">
                                             {ReportStatus.map((element, index) => (
-                                                report[8] !== index ? (
+                                                report[8] != index ? (
                                                     <li key={index} onClick={() => handleStatusChange(index, report[0])}>
                                                         <a className="dropdown-item">{element}</a>
                                                     </li>
