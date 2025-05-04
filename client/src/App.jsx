@@ -9,6 +9,7 @@ import Logout from "./pages/Logout";
 import DefautHandler from "./pages/DefaultHandler";
 import ReportUser from "./pages/ReportUser";
 import ReportManager from "./pages/ReportManager";
+import InvestigationManager from "./pages/InvestigationManager";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="" element={<DefautHandler />} />
         <Route path="reportUser" element={<ReportUser />} />
         <Route path="reportManager" element={<ReportManager />} />
+        <Route path="investigaionManager" element={<InvestigationManager />} />
       </Routes>
     </EthProvider>
   );
