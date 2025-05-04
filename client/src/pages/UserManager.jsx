@@ -34,7 +34,7 @@ function UserManager() {
             <h1>Manege Users</h1>
             <hr className='my-0 mb-3' />
             {
-                user.length > 0 ?
+                tableData.length > 0 ?
                     (<table className="table">
                         <thead className="thead-dark">
                             <tr>
