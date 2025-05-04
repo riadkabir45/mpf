@@ -9,6 +9,7 @@ contract InvestigationManager {
     ReportManager reportManager;
     UserManager userManager;
     uint balance;
+    uint fixedPay = 2;
 
     address[] investigators;
 
@@ -56,29 +57,26 @@ contract InvestigationManager {
         return investigations[_reportCID];
     }
 
-    // function bookAppointment(
-    //     bytes32 _reportCID,
-    //     uint slot
-    // ) public payable returns (uint) {
-    //     require(slot < 2, "Invalid slot");
-    //     require(msg.value >= 2, "Insifficient funds");
-    //     require(
-    //         investigations[_reportCID] != zeroAddr,
-    //         "Investigator not assigned"
-    //     );
-    //     require(
-    //         schedules[investigations[_reportCID]][slot] == zeroAddr,
-    //         "Appointment already booked"
-    //     );
-    //     balance += msg.value;
-    //     return msg.value;
-    // }
+    function bookAppointment(address _user, uint slot) public payable {
+        require(slot < 2, "Invalid slot");
+        require(msg.value >= fixedPay, "Insifficient funds");
+        require(
+            schedules[_user][slot] == zeroAddr,
+            "Appointment already booked"
+        );
+        (bool success, ) = payable(msg.sender).call{
+            value: msg.value - fixedPay
+        }("");
+        require(success, "Refund failed");
+        balance += msg.value;
+        schedules[_user][slot] = msg.sender;
+    }
 
-    // function getInvestigatorAppointment(
-    //     address _investigator
-    // ) public view returns (address[2] memory) {
-    //     return schedules[_investigator];
-    // }
+    function getInvestigatorAppointment(
+        address _investigator
+    ) public view returns (address[2] memory) {
+        return schedules[_investigator];
+    }
 
     // function getInvestigatorAppoinment(uint _reportId, uint slot) public view returns (Report memory){
     //     if (slot == 0)

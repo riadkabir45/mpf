@@ -82,75 +82,86 @@ function ReportManager() {
     }
 
     return (
-        <PageHolder>
-            <div>
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    className="form-control mb-3"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <table className="table">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Height</th>
-                            <th>Description</th>
-                            <th>Location</th>
-                            <th>Contact</th>
-                            <th>Urgency</th>
-                            <th>Report Status</th>
-                            <th>Assigned Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredData.map((report, idx) => (
-                            <tr key={report[0]}>
-                                <td>{report[1]}</td>
-                                <td>{report[2]}</td>
-                                <td>{report[3]}</td>
-                                <td>{report[4]}</td>
-                                <td>{report[5]}</td>
-                                <td>{report[6]}</td>
-                                <td>{report[7]}</td>
-                                <td>
-                                    <div className="dropdown">
-                                        <button className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {ReportStatus[report[8]]}
-                                        </button>
-                                        <ul className="dropdown-menu">
-                                            {ReportStatus.map((element, index) => (
-                                                report[8] != index ? (
-                                                    <li key={index} onClick={() => handleStatusChange(index, report[0])}>
-                                                        <a className="dropdown-item">{element}</a>
-                                                    </li>
-                                                ) : null
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td className='text-center'>
-                                    {allocationData[idx] ? allocationData[idx] : (
-                                        <button className='btn btn-primary w-100'
-                                            onClick={() => handleAllocation(report[0])}
-                                        >Assign</button>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            <span>
-                {bottomData.locations ? bottomData.locations.map((location, index) => (
-                    <span key={index}>
-                        {`${toTitleCase(location)}(${bottomData.locationReport[index].length})`}
-                        {index < bottomData.locations.length - 1 && ', '}
-                    </span>
-                )) : null}
-            </span>
+        <PageHolder className='text-center'>
+            <h1>Manage Reports</h1>
+            {
+                filteredData.length > 0 ?
+                    (
+                        <>
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Search..."
+                                    className="form-control mb-3"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <table className="table">
+                                    <thead className="thead-dark">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Age</th>
+                                            <th>Height</th>
+                                            <th>Description</th>
+                                            <th>Location</th>
+                                            <th>Contact</th>
+                                            <th>Urgency</th>
+                                            <th>Report Status</th>
+                                            <th>Assigned Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredData.map((report, idx) => (
+                                            <tr key={report[0]}>
+                                                <td>{report[1]}</td>
+                                                <td>{report[2]}</td>
+                                                <td>{report[3]}</td>
+                                                <td>{report[4]}</td>
+                                                <td>{report[5]}</td>
+                                                <td>{report[6]}</td>
+                                                <td>{report[7]}</td>
+                                                <td>
+                                                    <div className="dropdown">
+                                                        <button className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            {ReportStatus[report[8]]}
+                                                        </button>
+                                                        <ul className="dropdown-menu">
+                                                            {ReportStatus.map((element, index) => (
+                                                                report[8] != index ? (
+                                                                    <li key={index} onClick={() => handleStatusChange(index, report[0])}>
+                                                                        <a className="dropdown-item">{element}</a>
+                                                                    </li>
+                                                                ) : null
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td className='text-center'>
+                                                    {allocationData[idx] ? allocationData[idx] : (
+                                                        <button className='btn btn-primary w-100'
+                                                            onClick={() => handleAllocation(report[0])}
+                                                        >Assign</button>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <span>
+                                {bottomData.locations ? bottomData.locations.map((location, index) => (
+                                    <span key={index}>
+                                        {`${toTitleCase(location)}(${bottomData.locationReport[index].length})`}
+                                        {index < bottomData.locations.length - 1 && ', '}
+                                    </span>
+                                )) : null}
+                            </span>
+                        </>
+                    ) :
+                    (
+                        <span>Data not found</span>
+                    )
+            }
         </PageHolder>
     );
 }
