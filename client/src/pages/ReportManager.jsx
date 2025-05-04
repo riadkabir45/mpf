@@ -137,11 +137,11 @@ function ReportManager() {
                                                     </div>
                                                 </td>
                                                 <td className='text-center'>
-                                                    {allocationData[idx] ? allocationData[idx] : (
-                                                        <button className='btn btn-primary w-100'
-                                                            onClick={() => handleAllocation(report[0])}
-                                                        >Assign</button>
-                                                    )}
+                                                    <button className={'btn w-100 ' + (allocationData[idx] ? 'btn-secondary' : 'btn-primary')}
+                                                        onClick={() => handleAllocation(report[0])}>
+                                                        {allocationData[idx] ? allocationData[idx] : 'Assign'}
+                                                    </button>
+
                                                 </td>
                                             </tr>
                                         ))}
