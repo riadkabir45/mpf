@@ -1,11 +1,22 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const navLinkStyle = {
     textDecoration: 'none',
     color: 'black'
 }
 
+
 function Nav() {
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        window.ethereum.on('accountsChanged', newAccounts => {
+            if (!localStorage.getItem('userSession').split(',')[0].toUpperCase() == newAccounts[0].toUpperCase());
+            navigate('/logout')
+        })
+    }, [])
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
