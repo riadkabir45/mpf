@@ -12,7 +12,7 @@ function Nav() {
     const navigate = useNavigate();
     useEffect(() => {
         window.ethereum.on('accountsChanged', newAccounts => {
-            if (!localStorage.getItem('userSession').split(',')[0].toUpperCase() == newAccounts[0].toUpperCase());
+            if (localStorage.getItem('userSession') != null && !localStorage.getItem('userSession').split(',')[0].toUpperCase() == newAccounts[0].toUpperCase());
             navigate('/logout')
         })
     }, [])
