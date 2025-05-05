@@ -8,7 +8,7 @@ import {StringUtils} from "./StringUtils.sol";
 contract InvestigationManager {
     ReportManager reportManager;
     UserManager userManager;
-    uint balance;
+    uint balance = 10;
     uint fixedPay = 2;
 
     address[] investigators;
@@ -39,6 +39,10 @@ contract InvestigationManager {
         );
         investigations[_reportCID] = investigatorAddress;
         investigators.push(investigatorAddress);
+    }
+
+    function getBalance() public view returns (uint) {
+        return balance;
     }
 
     function getInvestigators() public view returns (address[] memory) {
@@ -76,6 +80,15 @@ contract InvestigationManager {
         address _investigator
     ) public view returns (address[2] memory) {
         return schedules[_investigator];
+    }
+
+    function transferToUser(address payable recipient, uint256 amount) public {
+        require(balance >= amount, "Insufficient contract balance");
+        require(amount > 0, "Transfer amount must be greater than zero");
+
+        balance -= amount;
+
+        recipient.transfer(amount);
     }
 
     // function getInvestigatorAppoinment(uint _reportId, uint slot) public view returns (Report memory){

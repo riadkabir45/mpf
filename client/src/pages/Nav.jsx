@@ -45,6 +45,9 @@ function Nav() {
                                         <span className="nav-link"><NavLink style={navLinkStyle} to="/investigaionManager">Schedule Manager</NavLink></span>
                                     </li>
                                     <li className="nav-item">
+                                        <span className="nav-link"><NavLink style={navLinkStyle} to="/TransferFunds">Transfer Funds</NavLink></span>
+                                    </li>
+                                    <li className="nav-item">
                                         <span className="nav-link"><NavLink style={navLinkStyle} to="/logout">Logout</NavLink></span>
                                     </li>
                                 </>
