@@ -99,6 +99,7 @@ function ReportManager() {
                                 <table className="table">
                                     <thead className="thead-dark">
                                         <tr>
+                                            <th>Report ID</th>
                                             <th>Name</th>
                                             <th>Age</th>
                                             <th>Height</th>
@@ -113,6 +114,7 @@ function ReportManager() {
                                     <tbody>
                                         {filteredData.map((report, idx) => (
                                             <tr key={report[0]}>
+                                                <td>{report[0]}</td>
                                                 <td>{report[1]}</td>
                                                 <td>{report[2]}</td>
                                                 <td>{report[3]}</td>
