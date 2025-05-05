@@ -53,7 +53,7 @@ function InvestigationManager() {
                                         <td>{user[1]}</td>
                                         {[0, 1].map(slot => {
                                             return (
-                                                <td>{
+                                                <td key={`${slot}${user[0]}`}>{
                                                     appointmentData[idx][slot] == `0x${"0".repeat(40)}` ?
                                                         (<button
                                                             onClick={() => handleSchedule(user[0], slot)}
