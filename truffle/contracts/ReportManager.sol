@@ -133,7 +133,7 @@ contract ReportManager {
 
     function updateReport(bytes32 _reportCID, ReportStatus status) public {
         require(
-            userManager.checkUserType(msg.sender, RoleType.REPORTER),
+            userManager.checkUserType(msg.sender, RoleType.ADMIN),
             "Access denied"
         );
         require(reportMap[_reportCID].cid != bytes32(0), "Invalid id");
